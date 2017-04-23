@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  db:
+    image: mysql:5.7.17
+    volumes:
+      - "./.data/db:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+    expose:
+      - "3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    environment:
+      - VIRTUAL_HOST=phpmyadmin.pugmi.dev
+
+  web:
+    build: .
+    volumes:
+      - ".:/var/www"
+    depends_on:
+      - db
+    environment:
+      - VIRTUAL_HOST=*.pugmi.dev

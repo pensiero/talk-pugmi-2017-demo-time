@@ -1,0 +1,11 @@
+._*
+.~lock.*
+.buildpath
+.DS_Store
+.idea
+.data
+/log/
+/logs/
+/bower_components/
+/node_modules/
+/vendor/
